@@ -6,3 +6,19 @@ services:
       - ./product:/app
     ports:
       - 5001:80
+    depends_on:
+      - redis-service
+    deploy:
+      restart_policy:
+        condition: on-failure
+    
+  redis-service:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    hostname: redis-service
+    command: "redis-server"
+    
